@@ -16,3 +16,6 @@ test:
 
 test-coverage:
 	npx jest --coverage
+
+run:
+	node bin/page-loader.js https://ru.hexlet.io/courses

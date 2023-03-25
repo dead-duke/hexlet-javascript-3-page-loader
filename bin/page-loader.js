@@ -7,7 +7,7 @@ program
   .description('Page loader utility')
   .version('1.0.0')
   .option('-o, --output [dir]', `output dir (default: "${process.cwd()}")`, process.cwd())
-  .action(async (url, options) => {
-    console.log(await pageLoader(options.output, url));
+  .action((url, options) => {
+    pageLoader(options.output, url).then((result) => console.log(result));
   })
   .parse();

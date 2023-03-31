@@ -1,5 +1,5 @@
 import { program } from 'commander';
-import pageLoader from '../src/loader.js';
+import pageLoader from '../src/pageLoader.js';
 
 program
   .name('page-loader')
@@ -7,7 +7,7 @@ program
   .description('Page loader utility')
   .version('1.0.0')
   .option('-o, --output [dir]', `output dir (default: "${process.cwd()}")`, process.cwd())
-  .action((url, options) => {
-    pageLoader(options.output, url).then((result) => console.log(result));
+  .action((link, options) => {
+    pageLoader(options.output, link).then((result) => console.log(result));
   })
   .parse();

@@ -61,20 +61,20 @@ beforeAll(async () => {
 describe('page loader file system errors', () => {
   test('load page: no such file or directory', async () => {
     const invalidPath = getFixturePath('invalidPath');
-    await expect(pageLoader(invalidPath, pageUrl.href)).rejects
-      .toThrow(`ENOENT: no such file or directory, mkdir '${path.join(invalidPath, contentDir)}'`);
+    const expectedError = `ENOENT: no such file or directory, mkdir '${path.join(invalidPath, contentDir)}'`;
+    await expect(pageLoader(invalidPath, pageUrl.href)).rejects.toThrow(expectedError);
   });
 
   test('load page: permission denied', async () => {
     const rootDir = '/root';
-    await expect(pageLoader(rootDir, pageUrl.href)).rejects
-      .toThrow(`EACCES: permission denied, lstat '${path.join(rootDir, contentDir)}'`);
+    const expectedError = `EACCES: permission denied, lstat '${path.join(rootDir, contentDir)}'`;
+    await expect(pageLoader(rootDir, pageUrl.href)).rejects.toThrow(expectedError);
   });
 
   test('load page: not a directory', async () => {
     const filepath = getFixturePath(pagePath);
-    await expect(pageLoader(filepath, pageUrl.href)).rejects
-      .toThrow(`ENOTDIR: not a directory, lstat '${path.join(filepath, contentDir)}'`);
+    const expectedError = `ENOTDIR: not a directory, lstat '${path.join(filepath, contentDir)}'`;
+    await expect(pageLoader(filepath, pageUrl.href)).rejects.toThrow(expectedError);
   });
 });
 

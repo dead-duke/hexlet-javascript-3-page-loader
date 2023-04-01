@@ -9,7 +9,7 @@ program
   .option('-o, --output [dir]', 'output dir', process.cwd())
   .option('-b, --progressBar [name]', 'progress bar name: default | silent', 'default')
   .action((link, options) => {
-    pageLoader(options.output, link, options.progressBar)
+    pageLoader(link, options.output, options.progressBar)
       .then((result) => console.log(result))
       .catch((err) => {
         console.error(err.message);

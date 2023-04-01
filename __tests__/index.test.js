@@ -62,19 +62,19 @@ describe('page loader file system errors', () => {
   test('load page: no such file or directory', async () => {
     const invalidPath = getFixturePath('invalidPath');
     const expectedError = `ENOENT: no such file or directory, mkdir '${path.join(invalidPath, contentDir)}'`;
-    await expect(pageLoader(invalidPath, pageUrl.href)).rejects.toThrow(expectedError);
+    await expect(pageLoader(pageUrl.href, invalidPath)).rejects.toThrow(expectedError);
   });
 
   test('load page: permission denied', async () => {
     const rootDir = '/root';
     const expectedError = `EACCES: permission denied, lstat '${path.join(rootDir, contentDir)}'`;
-    await expect(pageLoader(rootDir, pageUrl.href)).rejects.toThrow(expectedError);
+    await expect(pageLoader(pageUrl.href, rootDir)).rejects.toThrow(expectedError);
   });
 
   test('load page: not a directory', async () => {
     const filepath = getFixturePath(pagePath);
     const expectedError = `ENOTDIR: not a directory, lstat '${path.join(filepath, contentDir)}'`;
-    await expect(pageLoader(filepath, pageUrl.href)).rejects.toThrow(expectedError);
+    await expect(pageLoader(pageUrl.href, filepath)).rejects.toThrow(expectedError);
   });
 });
 
@@ -83,7 +83,7 @@ describe('page loader network errors', () => {
     const invalidUrl = new URL('https://ru.null.null');
     const expectedError = `getaddrinfo ENOTFOUND ${invalidUrl}`;
     nock(invalidUrl).get('/').replyWithError(expectedError);
-    await expect(pageLoader(tempDir, invalidUrl)).rejects.toThrow(expectedError);
+    await expect(pageLoader(invalidUrl, tempDir)).rejects.toThrow(expectedError);
 
     const isFileExist = await isExist(path.join(tempDir, pagePath));
     await expect(isFileExist).toBeFalsy();
@@ -91,14 +91,14 @@ describe('page loader network errors', () => {
 
   test.each([404, 500])('load page: response status code %s', async (code) => {
     scope.get(`/${code}`).reply(code, null);
-    await expect(pageLoader(tempDir, new URL(`${pageUrl.origin}/${code}`)))
+    await expect(pageLoader(new URL(`${pageUrl.origin}/${code}`), tempDir))
       .rejects.toThrow(`Request failed with status code ${code}`);
   });
 });
 
 describe('page loader', () => {
   test('load page', async () => {
-    await pageLoader(tempDir, pageUrl.href);
+    await pageLoader(pageUrl.href, tempDir);
 
     const isPageExist = await isExist(path.join(tempDir, pagePath));
     await expect(isPageExist).toBeTruthy();

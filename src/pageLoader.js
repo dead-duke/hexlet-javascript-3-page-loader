@@ -7,8 +7,7 @@ import { loadContent, getPageContent } from './utilities/loadUtilities.js';
 
 const log = debug('page-loader');
 
-const pageLoader = (output, link, progressBar) => {
-  console.log(link);
+const pageLoader = (link, output, progressBar) => {
   const url = new URL(link);
 
   const pagePath = path.join(output, getFilename(url));

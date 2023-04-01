@@ -10,6 +10,7 @@ const log = debug('page-loader');
 const pageLoader = (link, output, progressBar) => {
   const url = new URL(link);
 
+  console.log(output, url, getFilename(url));
   const pagePath = path.join(output, getFilename(url));
   const contentDir = getContentDir(url);
   log('Input data', { url: url.href, path: pagePath, dir: output });

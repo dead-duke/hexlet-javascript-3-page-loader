@@ -58,6 +58,44 @@ beforeAll(async () => {
   content.forEach(({ url, data }) => scope.get(url).reply(200, data));
 });
 
+describe('page loader file system errors', () => {
+  test('load page: no such file or directory', async () => {
+    const invalidPath = getFixturePath('invalidPath');
+    await expect(pageLoader(invalidPath, pageUrl.href)).rejects
+      .toThrow(`ENOENT: no such file or directory, mkdir '${path.join(invalidPath, contentDir)}'`);
+  });
+
+  test('load page: permission denied', async () => {
+    const rootDir = '/root';
+    await expect(pageLoader(rootDir, pageUrl.href)).rejects
+      .toThrow(`EACCES: permission denied, lstat '${path.join(rootDir, contentDir)}'`);
+  });
+
+  test('load page: not a directory', async () => {
+    const filepath = getFixturePath(pagePath);
+    await expect(pageLoader(filepath, pageUrl.href)).rejects
+      .toThrow(`ENOTDIR: not a directory, lstat '${path.join(filepath, contentDir)}'`);
+  });
+});
+
+describe('page loader network errors', () => {
+  test('load page: invalid url', async () => {
+    const invalidUrl = new URL('https://ru.null.null');
+    const expectedError = `getaddrinfo ENOTFOUND ${invalidUrl}`;
+    nock(invalidUrl).get('/').replyWithError(expectedError);
+    await expect(pageLoader(tempDir, invalidUrl)).rejects.toThrow(expectedError);
+
+    const isFileExist = await isExist(path.join(tempDir, pagePath));
+    expect(isFileExist).toBeFalsy();
+  });
+
+  test.each([404, 500])('load page: response status code %s', async (code) => {
+    scope.get(`/${code}`).reply(code, null);
+    await expect(pageLoader(tempDir, new URL(`${pageUrl.origin}/${code}`)))
+      .rejects.toThrow(`Request failed with status code ${code}`);
+  });
+});
+
 describe('page loader', () => {
   test('load page', async () => {
     await pageLoader(tempDir, pageUrl.href);

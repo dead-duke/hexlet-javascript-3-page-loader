@@ -110,9 +110,6 @@ describe('page loader', () => {
   test.each(formats)('load .%s file', async (format) => {
     const { filename, data } = content.find((file) => file.format === format);
 
-    const isFileExist = await isExist(path.join(tempDir, filename));
-    expect(isFileExist).toBeTruthy();
-
     const actualFile = await fsp.readFile(path.join(tempDir, filename));
     expect(actualFile).toEqual(data);
   });

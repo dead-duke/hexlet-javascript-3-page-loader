@@ -98,6 +98,7 @@ describe('page loader network errors', () => {
 
 describe('page loader', () => {
   test('load page', async () => {
+    tempDir = await fsp.mkdtemp(path.join(os.tmpdir(), 'page-loader-'));
     await pageLoader(tempDir, pageUrl.href);
 
     const isPageExist = await isExist(path.join(tempDir, pagePath));

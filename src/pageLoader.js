@@ -1,12 +1,13 @@
 import path from 'path';
 import debug from 'debug';
+import Listr from 'listr';
 import { getFilename, getContentDir } from './utilities/pathUtilities.js';
 import { makeDir, makeFile } from './utilities/fsUtilities.js';
 import { loadContent, getPageContent } from './utilities/loadUtilities.js';
 
 const log = debug('page-loader');
 
-const pageLoader = (output, link) => {
+const pageLoader = (output, link, progressBar) => {
   const url = new URL(link);
 
   const pagePath = path.join(output, getFilename(url));
@@ -27,11 +28,17 @@ const pageLoader = (output, link) => {
       return makeFile(pagePath, page).then(() => content);
     })
     .then((content) => {
-      content.map((file) => {
+      const promises = content.map((file) => {
         log('Save content', { url: file.link, path: file.path });
-        return loadContent(file.link)
+        const task = loadContent(file.link)
           .then((data) => makeFile(path.join(output, file.path), data));
+        return {
+          title: file.link,
+          task: () => task,
+        };
       });
+      const listr = new Listr(promises, { concurrent: true, renderer: progressBar });
+      return listr.run();
     })
     .then(() => pagePath);
 };

@@ -11,7 +11,7 @@ const pageLoader = (link, output, progressBar) => {
   const url = new URL(link);
 
   console.log(output, url, getFilename(url));
-  const pagePath = path.join(output, getFilename(url));
+  const pagePath = path.join(output ?? process.cwd(), getFilename(url));
   const contentDir = getContentDir(url);
   log('Input data', { url: url.href, path: pagePath, dir: output });
 

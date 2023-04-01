@@ -73,7 +73,7 @@ describe('page loader file system errors', () => {
 
   test('load page: not a directory', async () => {
     const filepath = getFixturePath(pagePath);
-    const expectedError = `ENOTDIR: not a directory, lstat '${path.join(filepath, contentDir)}'`;
+    const expectedError = `ENOTDIR: not a directory, mkdir '${path.join(filepath, contentDir)}'`;
     await expect(pageLoader(pageUrl.href, filepath)).rejects.toThrow(expectedError);
   });
 });

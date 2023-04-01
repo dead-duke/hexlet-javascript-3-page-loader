@@ -8,6 +8,11 @@ program
   .version('1.0.0')
   .option('-o, --output [dir]', `output dir (default: "${process.cwd()}")`, process.cwd())
   .action((link, options) => {
-    pageLoader(options.output, link).then((result) => console.log(result));
+    pageLoader(options.output, link)
+      .then((result) => console.log(result))
+      .catch((err) => {
+        console.error(err.message);
+        process.exit(1);
+      });
   })
   .parse();

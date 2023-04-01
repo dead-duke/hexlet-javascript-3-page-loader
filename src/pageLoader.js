@@ -10,14 +10,15 @@ const log = debug('page-loader');
 const pageLoader = (link, output, progressBar) => {
   const url = new URL(link);
 
-  const pagePath = path.join(output, getFilename(url));
+  const outputDir = output ?? process.cwd();
+  const pagePath = path.join(outputDir, getFilename(url));
   const contentDir = getContentDir(url);
-  log('Input data', { url: url.href, path: pagePath, dir: output });
+  log('Input data', { url: url.href, path: pagePath, dir: outputDir });
 
   return loadContent(link)
     .then((data) => {
-      log('Create page content directory', { dir: path.join(output, contentDir) });
-      return makeDir(path.join(output, contentDir)).then(() => data);
+      log('Create page content directory', { dir: path.join(outputDir, contentDir) });
+      return makeDir(path.join(outputDir, contentDir)).then(() => data);
     })
     .then((data) => {
       log('Load page content', { url: url.href });
@@ -31,7 +32,7 @@ const pageLoader = (link, output, progressBar) => {
       const promises = content.map((file) => {
         log('Save content', { url: file.link, path: file.path });
         const task = loadContent(file.link)
-          .then((data) => makeFile(path.join(output, file.path), data));
+          .then((data) => makeFile(path.join(outputDir, file.path), data));
         return {
           title: file.link,
           task: () => task,

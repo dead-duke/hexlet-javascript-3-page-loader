@@ -7,18 +7,17 @@ import { loadContent, getPageContent } from './utilities/loadUtilities.js';
 
 const log = debug('page-loader');
 
-const pageLoader = (link, output, progressBar) => {
+const pageLoader = (link, output = process.cwd()) => {
   const url = new URL(link);
 
-  const outputDir = output ?? process.cwd();
-  const pagePath = path.join(outputDir, getFilename(url));
+  const pagePath = path.join(output, getFilename(url));
   const contentDir = getContentDir(url);
-  log('Input data', { url: url.href, path: pagePath, dir: outputDir });
+  log('Input data', { url: url.href, path: pagePath, dir: output });
 
   return loadContent(link)
     .then((data) => {
-      log('Create page content directory', { dir: path.join(outputDir, contentDir) });
-      return makeDir(path.join(outputDir, contentDir)).then(() => data);
+      log('Create page content directory', { dir: path.join(output, contentDir) });
+      return makeDir(path.join(output, contentDir)).then(() => data);
     })
     .then((data) => {
       log('Load page content', { url: url.href });
@@ -32,13 +31,13 @@ const pageLoader = (link, output, progressBar) => {
       const promises = content.map((file) => {
         log('Save content', { url: file.link, path: file.path });
         const task = loadContent(file.link)
-          .then((data) => makeFile(path.join(outputDir, file.path), data));
+          .then((data) => makeFile(path.join(output, file.path), data));
         return {
           title: file.link,
           task: () => task,
         };
       });
-      const listr = new Listr(promises, { concurrent: true, renderer: progressBar });
+      const listr = new Listr(promises, { concurrent: true });
       return listr.run();
     })
     .then(() => pagePath);

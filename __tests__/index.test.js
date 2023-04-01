@@ -66,8 +66,8 @@ describe('page loader file system errors', () => {
   });
 
   test('load page: permission denied', async () => {
-    const rootDir = '/root';
-    const expectedError = `EACCES: permission denied, lstat '${path.join(rootDir, contentDir)}'`;
+    const rootDir = '/sys';
+    const expectedError = `EACCES: permission denied, mkdir '${path.join(rootDir, contentDir)}'`;
     await expect(pageLoader(pageUrl.href, rootDir)).rejects.toThrow(expectedError);
   });
 

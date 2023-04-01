@@ -8,9 +8,8 @@ program
   .description('Page loader utility')
   .version('1.0.0')
   .option('-o, --output [dir]', 'output dir', process.cwd())
-  .option('-b, --progressBar [name]', 'progress bar name: default | silent', 'default')
   .action((link) => {
-    pageLoader(link, program.output, program.progressBar)
+    pageLoader(link, program.output)
       .then((result) => console.log(result))
       .catch((err) => {
         console.error(err.message);

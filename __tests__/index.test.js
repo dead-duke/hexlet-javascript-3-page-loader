@@ -86,7 +86,7 @@ describe('page loader network errors', () => {
     await expect(pageLoader(tempDir, invalidUrl)).rejects.toThrow(expectedError);
 
     const isFileExist = await isExist(path.join(tempDir, pagePath));
-    expect(isFileExist).toBeFalsy();
+    await expect(isFileExist).toBeFalsy();
   });
 
   test.each([404, 500])('load page: response status code %s', async (code) => {
@@ -101,16 +101,19 @@ describe('page loader', () => {
     await pageLoader(tempDir, pageUrl.href);
 
     const isPageExist = await isExist(path.join(tempDir, pagePath));
-    expect(isPageExist).toBeTruthy();
+    await expect(isPageExist).toBeTruthy();
 
     const actualPage = await fsp.readFile(path.join(tempDir, pagePath), 'utf-8');
-    expect(actualPage).toEqual(expectedPage);
+    await expect(actualPage).toEqual(expectedPage);
   });
 
   test.each(formats)('load .%s file', async (format) => {
     const { filename, data } = content.find((file) => file.format === format);
 
+    const isFileExist = await isExist(path.join(tempDir, filename));
+    await expect(isFileExist).toBeTruthy();
+
     const actualFile = await fsp.readFile(path.join(tempDir, filename));
-    expect(actualFile).toEqual(data);
+    await expect(actualFile).toEqual(data);
   });
 });

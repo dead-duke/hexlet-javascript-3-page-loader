@@ -40,7 +40,10 @@ const pageLoader = (link, output = process.cwd()) => {
       const listr = new Listr(promises, { concurrent: true });
       return listr.run();
     })
-    .then(() => pagePath);
+    .then(() => pagePath)
+    .catch((err) => {
+      throw err;
+    });
 };
 
 export default pageLoader;

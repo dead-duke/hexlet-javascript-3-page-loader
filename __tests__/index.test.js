@@ -59,8 +59,8 @@ beforeAll(async () => {
 });
 
 test('page loader file system errors', async () => {
-  const isFileExist = await isExist(path.join(tempDir, pagePath));
-  expect(isFileExist).toBeFalsy();
+  const isFileAlreadyExist = await isExist(path.join(tempDir, pagePath));
+  expect(isFileAlreadyExist).toBeFalsy();
 
   const invalidPath = getFixturePath('invalidPath');
   const invalidPathError = `ENOENT: no such file or directory, mkdir '${path.join(invalidPath, contentDir)}'`;
@@ -77,6 +77,9 @@ test('page loader file system errors', async () => {
 
 describe('page loader network errors', () => {
   test('load page: invalid url', async () => {
+    const isFileAlreadyExist = await isExist(path.join(tempDir, pagePath));
+    expect(isFileAlreadyExist).toBeFalsy();
+
     const invalidUrl = new URL('https://ru.null.null');
     const expectedError = `getaddrinfo ENOTFOUND ${invalidUrl}`;
     nock(invalidUrl).get('/').replyWithError(expectedError);
@@ -95,6 +98,9 @@ describe('page loader network errors', () => {
 
 describe('page loader', () => {
   test('load page', async () => {
+    const isFileAlreadyExist = await isExist(path.join(tempDir, pagePath));
+    expect(isFileAlreadyExist).toBeFalsy();
+
     await pageLoader(pageUrl.href, tempDir);
 
     const isPageExist = await isExist(path.join(tempDir, pagePath));

@@ -58,24 +58,21 @@ beforeAll(async () => {
   content.forEach(({ url, data }) => scope.get(url).reply(200, data));
 });
 
-describe('page loader file system errors', () => {
-  test('load page: no such file or directory', async () => {
-    const invalidPath = getFixturePath('invalidPath');
-    const expectedError = `ENOENT: no such file or directory, mkdir '${path.join(invalidPath, contentDir)}'`;
-    await expect(pageLoader(pageUrl.href, invalidPath)).rejects.toThrow(expectedError);
-  });
+test('page loader file system errors', async () => {
+  const isFileExist = await isExist(path.join(tempDir, pagePath));
+  expect(isFileExist).toBeFalsy();
 
-  test('load page: permission denied', async () => {
-    const rootDir = '/sys';
-    const expectedError = `EACCES: permission denied, mkdir '${path.join(rootDir, contentDir)}'`;
-    await expect(pageLoader(pageUrl.href, rootDir)).rejects.toThrow(expectedError);
-  });
+  const invalidPath = getFixturePath('invalidPath');
+  const invalidPathError = `ENOENT: no such file or directory, mkdir '${path.join(invalidPath, contentDir)}'`;
+  await expect(pageLoader(pageUrl.href, invalidPath)).rejects.toThrow(invalidPathError);
 
-  test('load page: not a directory', async () => {
-    const filepath = getFixturePath(pagePath);
-    const expectedError = `ENOTDIR: not a directory, mkdir '${path.join(filepath, contentDir)}'`;
-    await expect(pageLoader(pageUrl.href, filepath)).rejects.toThrow(expectedError);
-  });
+  const rootDir = '/sys';
+  const permissionDeniedError = `EACCES: permission denied, mkdir '${path.join(rootDir, contentDir)}'`;
+  await expect(pageLoader(pageUrl.href, rootDir)).rejects.toThrow(permissionDeniedError);
+
+  const filepath = getFixturePath(pagePath);
+  const directoryTypeError = `ENOTDIR: not a directory, mkdir '${path.join(filepath, contentDir)}'`;
+  await expect(pageLoader(pageUrl.href, filepath)).rejects.toThrow(directoryTypeError);
 });
 
 describe('page loader network errors', () => {

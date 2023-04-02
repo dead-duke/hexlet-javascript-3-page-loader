@@ -8,11 +8,11 @@ program
   .description('Page loader utility')
   .version('1.0.0')
   .option('-o, --output [dir]', 'output dir', process.cwd())
-  .action((link) => {
-    pageLoader(link, program.output)
+  .action((link, options) => {
+    pageLoader(link, options.output)
       .then((result) => console.log(result))
       .catch((err) => {
-        throw err;
+        console.error(err.message);
       });
   })
   .parse(process.argv);

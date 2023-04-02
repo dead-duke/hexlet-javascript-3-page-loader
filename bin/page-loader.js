@@ -12,8 +12,7 @@ program
     pageLoader(link, program.output)
       .then((result) => console.log(result))
       .catch((err) => {
-        console.error(err.message);
-        process.exit(1);
+        throw err;
       });
   })
   .parse(process.argv);

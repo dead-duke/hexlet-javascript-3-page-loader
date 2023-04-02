@@ -63,9 +63,9 @@ describe('page loader negative cases', () => {
     const isFileAlreadyExist = await isExist(path.join(tempDir, pagePath));
     expect(isFileAlreadyExist).toBeFalsy();
 
-    const invalidUrl = new URL('https://ru.null.null');
-    const expectedError = `getaddrinfo ENOTFOUND ${invalidUrl}`;
-    nock(invalidUrl).get('/').replyWithError(expectedError);
+    const invalidUrl = new URL('https://badsite');
+    const expectedError = `getaddrinfo ENOTFOUND ${invalidUrl.host}`;
+    nock(invalidUrl).persist().get('/').replyWithError(expectedError);
     await expect(pageLoader(invalidUrl, tempDir)).rejects.toThrow(expectedError);
 
     const isFileExist = await isExist(path.join(tempDir, pagePath));

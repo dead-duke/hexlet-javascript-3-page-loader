@@ -10,7 +10,7 @@ const log = debug('page-loader');
 const pageLoader = (link, output = process.cwd()) => {
   const url = new URL(link);
 
-  const pagePath = path.join(output, getFilename(url));
+  const pagePath = path.join(output, getFilename(url, '.html'));
   const contentDir = getContentDir(url);
   log('Input data', { url: url.href, path: pagePath, dir: output });
 

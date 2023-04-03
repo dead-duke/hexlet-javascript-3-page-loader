@@ -10,7 +10,7 @@ program
   .option('-o, --output [dir]', 'output dir', process.cwd())
   .action((link, options) => {
     pageLoader(link, options.output)
-      .then((result) => console.log(result))
+      .then((filepath) => console.log(`Page was successfully downloaded into ${filepath}`))
       .catch((err) => {
         console.error(err.message);
         process.exit(1);

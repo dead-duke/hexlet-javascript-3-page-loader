@@ -4,12 +4,17 @@ const getPathParts = ({ hostname, pathname }) => path.parse(`${hostname}${pathna
 
 const normalize = (string) => string.replace(/[^\da-zа-я]/gi, '-');
 
-export const getFilename = (url) => {
+export const getFilename = (url, extension = null) => {
   const { dir, name, ext } = getPathParts(url);
-  const pathname = normalize(path.join(dir, name));
-  const extension = ext || '.html';
+  if (extension) {
+    const pathname = normalize(path.join(dir, name, ext.slice(1)));
 
-  return `${pathname}${extension}`;
+    return `${pathname}${extension}`;
+  }
+
+  const pathname = normalize(path.join(dir, name));
+
+  return `${pathname}${ext || '.html'}`;
 };
 
 export const getContentDir = (url, dirname = '_files') => {

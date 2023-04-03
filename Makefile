@@ -30,4 +30,4 @@ test-debug-app:
 	DEBUG=page-loader npx jest
 
 run:
-	node bin/page-loader.js https://ru.hexlet.io/courses
+	node bin/page-loader.js https://page-loader.hexlet.repl.co/

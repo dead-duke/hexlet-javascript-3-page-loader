@@ -19,3 +19,19 @@ CLI application to download webpage to local storage. The result of the work is 
 * `page-loader -h` information about application
 * `page-loader <url>` default launch
 * `page-loader -o [dir]` launch with user directory to save
+
+
+## Work examples
+
+* Download only main page
+[![asciicast](https://asciinema.org/a/573421.svg)](https://asciinema.org/a/573421)
+* Download main page and images
+[![asciicast](https://asciinema.org/a/573430.svg)](https://asciinema.org/a/573430)
+* Download main page and all other content
+[![asciicast](https://asciinema.org/a/573431.svg)](https://asciinema.org/a/573431)
+* Debug output
+[![asciicast](https://asciinema.org/a/573432.svg)](https://asciinema.org/a/573432)
+* Errors
+[![asciicast](https://asciinema.org/a/573433.svg)](https://asciinema.org/a/573433)
+* Download with progress bar
+[![asciicast](https://asciinema.org/a/573434.svg)](https://asciinema.org/a/573434)

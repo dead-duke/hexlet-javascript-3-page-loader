@@ -18,7 +18,7 @@ CLI application to download webpage to local storage. The result of the work is 
 * `make install` install
 * `page-loader -h` information about application
 * `page-loader <url>` default launch
-* `page-loader -o [dir]` launch with user directory to save
+* `page-loader -o [dir] <url>` launch with user directory to save
 
 
 ## Work examples

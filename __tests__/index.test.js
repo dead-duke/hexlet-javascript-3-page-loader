@@ -2,6 +2,12 @@ import os from 'os';
 import path from 'path';
 import nock from 'nock';
 import * as fsp from 'node:fs/promises';
+import {
+  describe,
+  test,
+  expect,
+  beforeAll,
+} from '@jest/globals';
 import pageLoader from '../src/pageLoader.js';
 
 const getFixturePath = (...filepaths) => path.resolve(`__fixtures__/${path.join(...filepaths)}`);

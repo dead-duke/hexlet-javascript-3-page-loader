@@ -9,14 +9,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/grim-vagabond/hexlet-javascript-3-page-loader.git"
+    "url": "git+https://github.com/dead-duke/hexlet-javascript-3-page-loader.git"
   },
   "author": "Artem Terenin",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/grim-vagabond/hexlet-javascript-3-page-loader/issues"
+    "url": "https://github.com/dead-duke/hexlet-javascript-3-page-loader/issues"
   },
-  "homepage": "https://github.com/grim-vagabond/hexlet-javascript-3-page-loader#readme",
+  "homepage": "https://github.com/dead-duke/hexlet-javascript-3-page-loader#readme",
   "bin": {
     "page-loader": "bin/page-loader.js"
   },

@@ -1,6 +1,6 @@
 #!/usr/bin/env node
-import { program } from 'commander';
-import pageLoader from '../src/pageLoader.js';
+import { program } from 'commander'
+import pageLoader from '../src/pageLoader.js'
 
 program
   .name('page-loader')
@@ -10,10 +10,10 @@ program
   .option('-o, --output [dir]', 'output dir', process.cwd())
   .action((link, options) => {
     pageLoader(link, options.output)
-      .then((filepath) => console.log(`Page was successfully downloaded into ${filepath}`))
+      .then(filepath => console.log(`Page was successfully downloaded into ${filepath}`))
       .catch((err) => {
-        console.error(err.message);
-        process.exit(1);
-      });
+        console.error(err.message)
+        process.exit(1)
+      })
   })
-  .parse(process.argv);
+  .parse(process.argv)
